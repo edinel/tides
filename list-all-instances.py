@@ -85,3 +85,8 @@ print ("Done")
 #    else:
 #        print ("not running:",i['Instances'][0]['InstanceId'])
 #print ("done double looping")
+
+
+#test
+
+exit (0)
