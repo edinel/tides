@@ -13,7 +13,7 @@ default_lng=-122.42872556430657
 
 
 
-def Get_Station_ID (lat=default_lat, lng=default_lng):
+def Get_Closest_Station_ID (lat=default_lat, lng=default_lng):
     all_tide_stations = json.load(urlopen("https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=tidepredictions&type=R")) 
     closest_station_id = ""
     closest_station=""
@@ -26,13 +26,11 @@ def Get_Station_ID (lat=default_lat, lng=default_lng):
             if ((station ["reference_id"] != "") & (station ["type"] == "R")): 
                 distance=calculated_distance
                 closest_station_id = station["id"]
-                closest_station=station
-                print ("NEW CLOSEST STATION: ",closest_station_id,"\n\tname is",closest_station["name"],"\n\tdistance is", str(calculated_distance))
-   
+                closest_station=station   
     return closest_station_id
 
 
-station_id=str(Get_Station_ID()) #Get the closest station ID
+station_id=str(Get_Closest_Station_ID()) #Get the closest station ID
 d=date.today() #get today's date
 begin_date = d.strftime("%Y%m%d") #format today's date the way NOAA wants it
 d = (date.today()+timedelta(days=7)) #7 days from now
@@ -49,6 +47,7 @@ url+= end_date
 url+= '&station='
 url+= station_id
 url+= '&product=predictions&datum=MLLW&time_zone=lst_ldt&interval=hilo&units=english&application=DataAPI_Sample&format=json'
+print ("\n\t",url,"\n\n")
 response = urlopen(url)
 tide_times_array = json.loads(response.read())["predictions"]
 pp.pprint(tide_times_array)
